@@ -21,6 +21,14 @@ format() {
   awk -F'\t' '{ printf "%-60s %s\n",$1,$2 }'
 }
 
+success() {
+  exit 0
+}
+
+failure() {
+  exit 1
+}
+
 export wd=$(pwd)
 export reset="$(tput sgr0 2>/dev/null)"
 gmake -v >/dev/null 2>&1 && export make=gmake || export make=make
@@ -83,4 +91,5 @@ for host in 5 6 7; do
   echo ; echo +++++++++++++++++ ${host} log +++++++++++++++++
   echo ; cat site${host}.log
 done
-grep -q "Hello there" site7.log && exit 0 || exit 1
+
+grep -q "Hello there" site7.log && success || failure
